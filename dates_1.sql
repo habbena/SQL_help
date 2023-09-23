@@ -5,7 +5,7 @@
 ----------------------------------------------------------------------------------
 
 SELECT date_part('month', now())::int,
-		EXTRACT(MONTH FROM now())
+	EXTRACT(MONTH FROM now())
 		
 		
 /*
