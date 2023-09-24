@@ -1,11 +1,13 @@
 -- ДАТЫ, ВРЕМЯ
 ----------------------------------------------------------------------------------
 -- Извлечение части от даты (год, месяц, день, час, мин, сек)
--- Возможно 2 синтаксиса:
 ----------------------------------------------------------------------------------
 
-SELECT date_part('month', now())::int,
-	EXTRACT(MONTH FROM now())
+-- Возможно 2 синтаксиса:
+
+SELECT date_part('month', now())::int;
+
+SELECT	EXTRACT(MONTH FROM now());
 		
 		
 /*
@@ -35,7 +37,7 @@ date_trunc                   |
 
 
 ВАЖНО!!!!
-date_part извлекает число. Например есть данные продаж за год, используя date_part('day', sales_date) 
+date_part извлекает число. Например, есть данные продаж за год, используя date_part('day', sales_date) 
 мы получим всего 31 строку,
 а используя date_trunc('day', sales_date) получим кол-во дней всего, когда были продажи. 
 
@@ -69,8 +71,8 @@ september|
 -- Генерация списка дат
 ----------------------------------------------------------------------------------
 SELECT generate_series('2023-09-01', 
-						'2023-09-10', 
-						'1 day'::interval)::date AS date
+			'2023-09-10', 
+			'1 day'::interval)::date AS date
 /*
 date      |
 ----------+
@@ -90,8 +92,8 @@ date      |
 --Внимание!!!! Генерация последних дней месяца
 
 SELECT (generate_series('2023-02-01', 
-						'2024-01-01', 
-						'1 month'::interval) - '1 day'::INTERVAL)::date
+			'2024-01-01', 
+			'1 month'::interval) - '1 day'::INTERVAL)::date
 
 ----------------------------------------------------------------------------------						
 -- Посчитать разницу между двумя соседними датами в одном столбце
@@ -151,8 +153,8 @@ WITH tmp (sales_date, sales) AS (
 ),
 months AS (
 SELECT (generate_series('2023-01-01', 
-						'2023-12-01', 
-						'1 month'::interval))::date  AS "month")
+			'2023-12-01', 
+			'1 month'::interval))::date  AS "month")
 SELECT "month", sales
 FROM months
 LEFT JOIN tmp ON sales_date = "month"	
@@ -185,12 +187,12 @@ WITH tmp (sales_date, sales) AS (
 ),
 months AS (
 SELECT (generate_series('2023-01-01', 
-						'2023-12-01', 
-						'1 month'::interval))::date  AS "month")
+			'2023-12-01', 
+			'1 month'::interval))::date  AS "month")
 SELECT "month"
 FROM months
 WHERE MONTH NOT IN (
-					SELECT sales_date FROM tmp)
+		SELECT sales_date FROM tmp)
 
 /*
 month     |
@@ -210,11 +212,11 @@ month     |
 WITH gen AS (
 SELECT 
 	generate_series('2023-01-01 09:00:00',
-					'2023-01-01 15:00:00', 
-					'3 hours'::interval )  AS min_time,
+			'2023-01-01 15:00:00', 
+			'3 hours'::interval )  AS min_time,
 	generate_series('2023-01-01 12:00:00',
-					'2023-01-01 18:00:00', 
-					'3 hours'::interval) AS max_time
+			'2023-01-01 18:00:00', 
+			'3 hours'::interval) AS max_time
 ),
 tmp (sales_date, sales) AS (
 	VALUES 
@@ -268,7 +270,7 @@ SELECT
 	max(gap)
 FROM 
 	(SELECT 
-			sales_date - lag(sales_date) OVER (ORDER BY sales_date) AS gap
+		sales_date - lag(sales_date) OVER (ORDER BY sales_date) AS gap
 	FROM tmp) AS res
 
 /*
