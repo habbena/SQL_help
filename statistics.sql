@@ -60,8 +60,8 @@ SELECT
 	avg(sales)
 FROM tmp
 WHERE sales NOT IN (
-		SELECT 	percentile_disc(.95) WITHIN GROUP (ORDER BY sales)
-		FROM tmp)
+				SELECT 	percentile_disc(.95) WITHIN GROUP (ORDER BY sales)
+				FROM tmp)
 
 /*
 avg                 |
